@@ -1,4 +1,4 @@
-name: puc-mlops-ead-environment
+name: mlops-env
 dependencies:
   - python=3.9
   - pip
