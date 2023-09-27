@@ -18,15 +18,15 @@ app = FastAPI()
 
 
 def load_model_from_registry():
-    MLFLOW_TRACKING_URI = ''
+    MLFLOW_TRACKING_URI = 'https://dagshub.com/renansantosmendes/mlops-ead.mlflow'
     MLFLOW_TRACKING_USERNAME = 'renansantosmendes'
-    MLFLOW_TRACKING_PASSWORD = '6d730ef4a90b1caf28fbb01e5748f0874fda6077'
+    MLFLOW_TRACKING_PASSWORD = 'cc41cc48f8e489dd5b87404dd6f9720944e32e9b'
     os.environ['MLFLOW_TRACKING_USERNAME'] = MLFLOW_TRACKING_USERNAME
     os.environ['MLFLOW_TRACKING_PASSWORD'] = MLFLOW_TRACKING_PASSWORD
 
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
     client = mlflow.MlflowClient(tracking_uri=MLFLOW_TRACKING_URI)
-    registered_model = client.get_registered_model('')
+    registered_model = client.get_registered_model('fetal_health')
     run_id = registered_model.latest_versions[-1].run_id
     logged_model = f'runs:/{run_id}/model'
     loaded_model = mlflow.pyfunc.load_model(logged_model)
@@ -38,12 +38,12 @@ def startup_event():
     global model
     model = load_model_from_registry()
 
-@app.get("/")
+@app.get(path='/')
 def home():
     return {"Message": "Healthy"}
 
 
-@app.post('/predict')
+@app.post(path='/predict')
 def predict(request: Data):
     global model
     print(request)
