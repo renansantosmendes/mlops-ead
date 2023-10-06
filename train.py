@@ -75,6 +75,10 @@ def train_model(model, X_train, y_train, is_train=True):
                 epochs=50,
                 validation_split=0.2,
                 verbose=3)
+    if is_train:
+        run_uri = f'runs:/{run.info.run_id}'
+        mlflow.register_model(run_uri, 'fetal_health')
+
 
 if __name__ == "__main__":
     X, y = read_data()
